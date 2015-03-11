@@ -60,13 +60,22 @@ namespace :apps do
     zone = "#{ROOT}/local/hiera/zones/#{args[:zone] || ZONEFILE}.yaml"
     config = YAML.load_file zone
     apps = args[:app] ? [args[:app]] : config['profile::hiera::config::occam_apps']
-    base_cmd = "git clone https://github.com/"
 
     Dir.chdir("puppet/apps") do
       apps.each do |app|
+        branch_flag = ""
+        if app.is_a? Hash then
+           repo = app['name']
+           if app.has_key? 'branch' then
+              branch_flag = "-b #{app['branch']}"
+           end
+        else
+           repo = app
+        end
+        base_cmd = "git clone #{branch_flag} https://github.com/"
         name  = app_name(app)
         if not Dir.exists?(name)
-          sh "#{base_cmd}#{app}.git #{name}"
+          sh "#{base_cmd}#{repo}.git #{name}"
         else
           puts "#{name} already exists. Perhaps you want to apps:update?"
         end

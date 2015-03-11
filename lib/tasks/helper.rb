@@ -121,5 +121,11 @@ def run cmd
 end
 
 def app_name(reference)
-  reference.split("occam-").last
+  ref = reference
+  if reference.is_a? Hash then
+     ref = reference['name']
+  else
+     ref = reference
+  end
+  ref.split("occam-").last
 end

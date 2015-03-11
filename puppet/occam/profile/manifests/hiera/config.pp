@@ -68,7 +68,7 @@
 # Copyright 2013 AT&T Foundry, unless otherwise noted.
 
 class profile::hiera::config (
-  $occam_apps = ['cloud']
+  $occam_apps = [{'name' => 'cloud'}]
 ) {
 
   $backend_confs = {
