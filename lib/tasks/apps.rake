@@ -77,7 +77,8 @@ namespace :apps do
         if not Dir.exists?(name)
           sh "#{base_cmd}#{repo}.git #{name}"
         else
-          puts "#{name} already exists. Perhaps you want to apps:update?"
+          puts "WARNING: #{name} already exists. Updating from github."
+          sh "cd #{name}; git checkout #{app['branch']}; git pull"
         end
       end
     end
